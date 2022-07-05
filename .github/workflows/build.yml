@@ -11,16 +11,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK ${{ matrix.Java }}
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
-          java-version: ${{ matrix.Java }}
+          java-version: ${{ matrix.java }}
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
+        environment:
+          PROJECT_VERSION: ${GITHUB_SHA}
         run: mvn --batch-mode --update-snapshots package
       - name: Store result as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: target-${{ matrix.Java }}-jar
+          name: target-${{ matrix.java }}-jar
           path: target/*.jar
