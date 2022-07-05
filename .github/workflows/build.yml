@@ -8,7 +8,8 @@ jobs:
     strategy:
       matrix:
         java: [ '8', '11', '13', '15' ]
-
+    environment:
+      PROJECT_VERSION: ${GITHUB_SHA}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
@@ -18,8 +19,6 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        environment:
-          PROJECT_VERSION: ${GITHUB_SHA}
         run: mvn --batch-mode --update-snapshots package
       - name: Store result as artifact
         uses: actions/upload-artifact@v3
